@@ -4,14 +4,37 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from contextlib import asynccontextmanager
 import os
 import traceback
 
+from database import engine, DATABASE_URL
+from models import Base
 from routers.excerpts import router as excerpts_router
 from routers.books import router as books_router
 from routers.tags import router as tags_router
 
-app = FastAPI(title="读书摘抄检索系统", version="2.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: auto-create tables and FULLTEXT index
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    # Ensure FULLTEXT index exists on excerpts (MySQL doesn't support IF NOT EXISTS on indexes)
+    try:
+        from sqlalchemy import text
+        async with engine.connect() as conn:
+            await conn.execute(text(
+                "CREATE FULLTEXT INDEX ft_excerpt "
+                "ON excerpts(content, insights) WITH PARSER ngram"
+            ))
+    except Exception:
+        pass  # index already exists or isn't supported — app still works with LIKE fallback
+    yield
+    await engine.dispose()
+
+
+app = FastAPI(title="读书摘抄检索系统", version="3.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

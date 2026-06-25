@@ -7,7 +7,7 @@ venv/
 
 # Node
 node_modules/
-frontend/dist/
+memo-app/frontend/dist/
 
 # IDE
 .idea/
@@ -18,13 +18,13 @@ frontend/dist/
 Thumbs.db
 
 # Env
-backend/.env
+memo-app/backend/.env
 
 # Uploads
-backend/uploads/*
+memo-app/backend/uploads/*
 
 # Alembic
-backend/migrations/versions/__pycache__/
+memo-app/backend/migrations/versions/__pycache__/
 
 # Claude
 .claude/

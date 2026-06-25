@@ -95,6 +95,13 @@ class BookGroup(BaseModel):
     excerpts: List[ExcerptOut]
 
 
+# ── AI ────────────────────────────────────────────────
+
+class GenerateInsightsRequest(BaseModel):
+    content: str = Field(..., min_length=1, max_length=5000)
+    book_id: Optional[int] = None
+
+
 # ── Search ───────────────────────────────────────────
 
 class SearchResult(BaseModel):

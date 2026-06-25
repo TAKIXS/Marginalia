@@ -38,7 +38,15 @@
         </el-form-item>
 
         <!-- 个人想法 -->
-        <el-form-item label="个人想法">
+        <el-form-item>
+          <template #label>
+            <div class="tag-label-row">
+              <span>个人想法</span>
+              <el-button type="primary" link size="small" :loading="aiLoading" @click="handleGenerateInsights">
+                <el-icon><MagicStick /></el-icon> AI 帮写感悟
+              </el-button>
+            </div>
+          </template>
           <el-input
             v-model="form.insights"
             type="textarea"
@@ -148,8 +156,8 @@
 <script setup>
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Plus, Close } from '@element-plus/icons-vue'
-import { createExcerpt, getBooks, getTags, createTag, uploadImage } from '../api/index.js'
+import { Plus, Close, MagicStick } from '@element-plus/icons-vue'
+import { createExcerpt, getBooks, getTags, createTag, uploadImage, generateInsights } from '../api/index.js'
 import TagManager from './TagManager.vue'
 
 const props = defineProps({
@@ -160,6 +168,7 @@ const emit = defineEmits(['saved'])
 
 const formRef = ref(null)
 const submitting = ref(false)
+const aiLoading = ref(false)
 const books = ref([])
 const tags = ref([])
 const tagManageVisible = ref(false)
@@ -232,6 +241,23 @@ async function handleImageUpload(file) {
     ElMessage.error('上传失败')
   }
   return false
+}
+
+async function handleGenerateInsights() {
+  if (!form.content.trim()) {
+    ElMessage.warning('请先填写摘抄原文')
+    return
+  }
+  aiLoading.value = true
+  try {
+    const { data } = await generateInsights({ content: form.content, book_id: form.book_id })
+    form.insights = data.insights
+    ElMessage.success('感悟已生成')
+  } catch (e) {
+    ElMessage.error('生成失败: ' + (e.response?.data?.detail || '请检查 API Key 配置'))
+  } finally {
+    aiLoading.value = false
+  }
 }
 
 async function handleSubmit() {

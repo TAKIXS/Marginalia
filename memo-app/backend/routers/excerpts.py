@@ -11,8 +11,9 @@ import uuid
 from datetime import datetime
 
 from database import get_db
-from models import Excerpt, Tag, ExcerptTag
-from schemas import ExcerptCreate, ExcerptUpdate, ExcerptOut, SearchResult
+from models import Excerpt, Tag, ExcerptTag, Book
+from schemas import ExcerptCreate, ExcerptUpdate, ExcerptOut, SearchResult, GenerateInsightsRequest
+from ai import generate_insights as ai_generate_insights
 from pydantic import BaseModel, Field
 from typing import List
 
@@ -211,6 +212,20 @@ async def random_excerpt(db: AsyncSession = Depends(get_db)):
     if not excerpt:
         raise HTTPException(status_code=404, detail="暂无摘抄")
     return excerpt.to_dict()
+
+
+@router.post("/generate-insights", summary="AI 生成感悟")
+async def generate_insights(data: GenerateInsightsRequest, db: AsyncSession = Depends(get_db)):
+    book_title = None
+    if data.book_id:
+        book = (await db.execute(select(Book).where(Book.id == data.book_id))).scalar()
+        if book:
+            book_title = book.title
+    try:
+        insights = await ai_generate_insights(data.content, book_title)
+        return {"insights": insights}
+    except RuntimeError as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.put("/{excerpt_id}/favorite", response_model=ExcerptOut, summary="切换收藏状态")

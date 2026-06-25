@@ -44,6 +44,7 @@ export const deleteExcerpt = (id) => api.delete(`/excerpts/${id}`)
 export const getRandomExcerpt = () => api.get('/excerpts/random')
 export const toggleFavorite = (id) => api.put(`/excerpts/${id}/favorite`)
 export const exportExcerpts = (params) => api.get('/excerpts/export', { params, responseType: 'blob' })
+export const generateInsights = (data) => api.post('/excerpts/generate-insights', data)
 export const batchDeleteExcerpts = (ids) => api.post('/excerpts/batch-delete', { ids })
 export const batchTagExcerpts = (ids, tag_ids) => api.post('/excerpts/batch-tag', { ids, tag_ids })
 

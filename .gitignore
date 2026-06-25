@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Node / Vite
+node_modules/
+dist/
+
+# IDE
+.idea/
+.vscode/
+.mcp.json
+# Claude Code
+.claude/
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploaded files (local dev)
+memo-app/backend/uploads/*
+!memo-app/backend/uploads/.gitkeep

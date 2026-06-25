@@ -136,7 +136,6 @@
         <TagManager
           v-model="tagManageVisible"
           :tags="tags"
-          :random-color="randomColor"
           @tag-added="onTagAdded"
           @tag-updated="onTagUpdated"
           @tag-deleted="onTagDeleted"

@@ -173,7 +173,7 @@
       :close-on-click-modal="false"
       destroy-on-close
     >
-      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-position="top" v-if="editVisible">
+      <el-form ref="editFormRef" :model="editForm" label-position="top" v-if="editVisible">
         <el-form-item label="所属书籍">
           <el-select v-model="editForm.book_id" filterable placeholder="选择书籍" style="width: 100%">
             <el-option
@@ -274,6 +274,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { ArrowRight, Delete, Edit, Close, Plus, Link, Star, StarFilled, Download, Refresh } from '@element-plus/icons-vue'
 import { getBookGroups, getBooks, getTags, updateExcerpt, deleteExcerpt, deleteBook, createBook, updateBook, getRandomExcerpt, toggleFavorite, exportExcerpts } from '../api/index.js'
 import AddExcerpt from './AddExcerpt.vue'
+import { truncate } from '../utils.js'
 
 const loading = ref(false)
 const saving = ref(false)
@@ -291,8 +292,6 @@ const editForm = ref({
   links: [],
   tag_ids: [],
 })
-const editRules = {}
-
 // ── 添加摘抄（per-book） ──────────────────────
 const excerptDialogVisible = ref(false)
 const selectedBook = ref(null)
@@ -463,11 +462,6 @@ async function handleEditSave() {
   } finally {
     saving.value = false
   }
-}
-
-function truncate(text, max) {
-  if (!text) return ''
-  return text.length > max ? text.slice(0, max) + '...' : text
 }
 
 // ── Random excerpt ─────────────────────────────

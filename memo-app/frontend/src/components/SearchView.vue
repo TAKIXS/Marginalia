@@ -173,6 +173,7 @@ import { ElMessage } from 'element-plus'
 import { Search, Reading, Link, Star, StarFilled } from '@element-plus/icons-vue'
 import { getExcerpts, getTags, getBooks, toggleFavorite } from '../api/index.js'
 import TagManager from './TagManager.vue'
+import { truncate } from '../utils.js'
 
 const loading = ref(false)
 const keyword = ref('')
@@ -259,11 +260,6 @@ function clearFilters() {
   favoritesOnly.value = false
   page.value = 1
   doSearch()
-}
-
-function truncate(text, max) {
-  if (!text) return ''
-  return text.length > max ? text.slice(0, max) + '...' : text
 }
 
 function onTagAdded(newTag) {

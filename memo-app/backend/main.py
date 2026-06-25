@@ -6,9 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 import os
-import traceback
 
-from database import engine, DATABASE_URL
+from database import engine
 from models import Base
 from routers.excerpts import router as excerpts_router
 from routers.books import router as books_router

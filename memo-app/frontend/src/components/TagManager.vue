@@ -48,7 +48,6 @@ import { createTag, updateTag, deleteTag } from '../api/index.js'
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   tags: { type: Array, default: () => [] },
-  randomColor: { type: Function, default: () => '#409EFF' },
 })
 
 const emit = defineEmits(['update:modelValue', 'tagAdded', 'tagUpdated', 'tagDeleted'])

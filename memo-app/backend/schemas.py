@@ -102,6 +102,16 @@ class GenerateInsightsRequest(BaseModel):
     book_id: Optional[int] = None
 
 
+# ── Batch Operations ──────────────────────────────────
+
+class BatchDeletePayload(BaseModel):
+    ids: List[int] = Field(..., min_length=1)
+
+class BatchTagPayload(BaseModel):
+    ids: List[int] = Field(..., min_length=1)
+    tag_ids: List[int] = Field(..., min_length=1)
+
+
 # ── Search ───────────────────────────────────────────
 
 class SearchResult(BaseModel):

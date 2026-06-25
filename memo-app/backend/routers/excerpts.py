@@ -5,16 +5,14 @@ from fastapi.responses import PlainTextResponse, JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, text, func, delete
 from sqlalchemy.orm import selectinload
-import json
 import os
 import uuid
 from datetime import datetime
 
 from database import get_db
 from models import Excerpt, Tag, ExcerptTag, Book
-from schemas import ExcerptCreate, ExcerptUpdate, ExcerptOut, SearchResult, GenerateInsightsRequest
+from schemas import ExcerptCreate, ExcerptUpdate, ExcerptOut, SearchResult, GenerateInsightsRequest, BatchDeletePayload, BatchTagPayload
 from ai import generate_insights as ai_generate_insights
-from pydantic import BaseModel, Field
 from typing import List
 
 router = APIRouter(prefix="/api/excerpts", tags=["excerpts"])
@@ -242,14 +240,6 @@ async def toggle_favorite(excerpt_id: int, db: AsyncSession = Depends(get_db)):
     await db.commit()
     await db.refresh(excerpt)
     return excerpt.to_dict()
-
-
-class BatchDeletePayload(BaseModel):
-    ids: List[int] = Field(..., min_length=1)
-
-class BatchTagPayload(BaseModel):
-    ids: List[int] = Field(..., min_length=1)
-    tag_ids: List[int] = Field(..., min_length=1)
 
 
 @router.post("/batch-delete", summary="批量删除摘抄")

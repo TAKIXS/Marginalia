@@ -8,7 +8,7 @@ from typing import List
 
 from database import get_db
 from models import Book, Excerpt
-from schemas import BookCreate, BookOut, BookUpdate, BookGroup, ExcerptOut
+from schemas import BookCreate, BookOut, BookUpdate, BookGroup
 
 router = APIRouter(prefix="/api/books", tags=["books"])
 

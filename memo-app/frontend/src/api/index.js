@@ -30,7 +30,6 @@ api.interceptors.response.use(
 export const getBooks = () => api.get('/books')
 export const createBook = (data) => api.post('/books', data)
 export const deleteBook = (id) => api.delete(`/books/${id}`)
-export const getBook = (id) => api.get(`/books/${id}`)
 export const updateBook = (id, data) => api.put(`/books/${id}`, data)
 export const getBookGroups = (bookId) => api.get('/books/groups', { params: bookId ? { book_id: bookId } : {} })
 
@@ -38,15 +37,12 @@ export const getBookGroups = (bookId) => api.get('/books/groups', { params: book
 
 export const createExcerpt = (data) => api.post('/excerpts', data)
 export const getExcerpts = (params) => api.get('/excerpts', { params })
-export const getExcerpt = (id) => api.get(`/excerpts/${id}`)
 export const updateExcerpt = (id, data) => api.put(`/excerpts/${id}`, data)
 export const deleteExcerpt = (id) => api.delete(`/excerpts/${id}`)
 export const getRandomExcerpt = () => api.get('/excerpts/random')
 export const toggleFavorite = (id) => api.put(`/excerpts/${id}/favorite`)
 export const exportExcerpts = (params) => api.get('/excerpts/export', { params, responseType: 'blob' })
 export const generateInsights = (data) => api.post('/excerpts/generate-insights', data)
-export const batchDeleteExcerpts = (ids) => api.post('/excerpts/batch-delete', { ids })
-export const batchTagExcerpts = (ids, tag_ids) => api.post('/excerpts/batch-tag', { ids, tag_ids })
 
 // ── Upload ─────────────────────────────────────────
 

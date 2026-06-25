@@ -1,26 +1,31 @@
 # Python
 __pycache__/
-*.py[cod]
-*.egg-info/
+*.pyc
+*.pyo
+.venv/
+venv/
 
-# Node / Vite
+# Node
 node_modules/
-dist/
+frontend/dist/
 
 # IDE
 .idea/
 .vscode/
-.mcp.json
-# Claude Code
-.claude/
-
-# Env
-.env
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Uploaded files (local dev)
-memo-app/backend/uploads/*
-!memo-app/backend/uploads/.gitkeep
+# Env
+backend/.env
+
+# Uploads
+backend/uploads/*
+
+# Alembic
+backend/migrations/versions/__pycache__/
+
+# Claude
+.claude/
+.mcp.json
